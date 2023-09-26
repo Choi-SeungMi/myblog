@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <th:block th:replace="~{/fragments/head::headFragment}"/>
+
+    <style>
+        td {word-break:break-all;word-wrap:break-word;}
+        #table-empty {
+            border: none;
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+
+<header th:replace="~{/fragments/header::headerFragment}">
+    헤더 삽입부
+    <hr>
+</header>
+
+<main class="container">
+
+    <div class="row">
+
+        <h3 th:text="${category}">전체글</h3>
+        <hr>
+        <table class="table" id="article-table">
+            <thead>
+                <tr>
+                <th scope="col" class="title col-6" th:text="제목">제목</th>
+                <th scope="col" class="user-id" th:text="작성자">작성자</th>
+                <th scope="col" class="created-at" th:text="작성일">작성일</th>
+                </tr>
+            </thead>
+
+            <tbody class="table-group-divider">
+                <div th:each="article : ${articleList}">
+                    <tr>
+                        <td class="title"><a th:text="${article.title}" th:href="@{'/articles/' + ${article.id}}">안녕하세요</a></td>
+                        <td class="user-id" th:text="${article.userAccountDto.userId}">승미</td>
+                        <td class="created-at" th:text="${#temporals.format(article.createdAt(), 'yyyy-MM-dd')}">2023-09-13</td>
+                    </tr>
+                </div>
+
+                <tr th:if="${articleList.isEmpty()}">
+                    <td colspan="3" id="table-empty">작성된 글이 없습니다.</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <nav id="pagination" aria-label="Page navigation">
+        <ul class="pagination justify-content-center" th:if="${category eq null}">
+            <li class="page-item"><a class="page-link" aria-label="Previous" th:href="@{/articles(page=${articleList.getPageable().getPageNumber()-1})}" th:class="'page-link' + (${articleList.getPageable().hasPrevious()} ? '' : ' disabled')"><span aria-hidden="true">&laquo;</span></a></li>
+
+            <th:block th:each="page : ${paginationBarNumbers}">
+                <li class="page-item"><a th:class="'page-link' + (${page} == ${articleList.getPageable().getPageNumber()} ? ' disabled' : '')" th:href="@{/articles(page=${page})}" th:text="${page+1}">1</a></li>
+            </th:block>
+
+            <li class="page-item"><a class="page-link" aria-label="Next" th:href="@{/articles(page=${articleList.getPageable().getPageNumber()+1})}" th:class="'page-link' + (${articleList.getPageable().getPageNumber() ne articleList.getTotalPages()-1} ? '' : ' disabled')"><span aria-hidden="true">&raquo;</span></a></li>
+        </ul>
+
+        <ul class="pagination justify-content-center" th:if="${category ne null}">
+            <li class="page-item"><a class="page-link" aria-label="Previous" th:href="@{/articles(category=${category}, page=${articleList.getPageable().getPageNumber()-1})}" th:class="'page-link' + (${articleList.getPageable().hasPrevious()} ? '' : ' disabled')"><span aria-hidden="true">&laquo;</span></a></li>
+
+            <th:block th:each="page : ${paginationBarNumbers}">
+                <li class="page-item"><a th:class="'page-link' + (${page} == ${articleList.getPageable().getPageNumber()} ? ' disabled' : '')" th:href="@{/articles(category=${category}, page=${page})}" th:text="${page+1}">1</a></li>
+            </th:block>
+
+            <li class="page-item"><a class="page-link" aria-label="Next" th:href="@{/articles(category=${category}, page=${articleList.getPageable().getPageNumber()+1})}" th:class="'page-link' + (${articleList.getPageable().getPageNumber() ne articleList.getTotalPages()-1} ? '' : ' disabled')"><span aria-hidden="true">&raquo;</span></a></li>
+        </ul>
+    </nav>
+
+
+
+    <div class="row">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a class="btn btn-primary me-md-2" role="button" id="write-article" sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/articles/form(category=${category})}'|" th:text="글쓰기">글쓰기</a>
+        </div>
+    </div>
+
+</main>
+
+<footer id="footer" th:replace="~{/fragments/footer::footerFragment}">
+    <hr>
+    푸터 삽입부
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+</body>
+</html>

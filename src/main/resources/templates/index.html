@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Clean Blog - Start Bootstrap Theme</title>
+    <th:block th:replace="~{/fragments/head::headFragment}"/>
+    <style>
+        ul{
+            list-style:none;
+            padding-left:0px;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header th:replace="~{/fragments/header::headerFragment}">
+    헤더 삽입부
+    <hr>
+</header>
+
+<div class="container">
+
+    <!--Category-->
+    <div class="row">
+        <div class="col-lg-2 col-md-2">
+            <h3>Category</h3>
+            <hr>
+            <ul>
+                <th:block th:each="category : ${allCategories}">
+                    <li><a th:class="${category.id() eq 1 ? 'total' : ''}" th:href="@{/articles(category=${category.categoryName()})}" th:text="${category.categoryName()} + ' (' + (${category.id() eq 1} ? ${totalCountArticle} : ${category.countArticle()}) + ')'"></a></li>
+                </th:block>
+            </ul>
+
+            <a role="button" id="write-article" sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/category}'|">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                    <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                    <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                </svg>
+                edit</a>
+        </div>
+
+
+
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+            <!-- Main Content-->
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-10 col-xl-9">
+                        <!-- Post preview-->
+                        <th:block th:each="article : ${articles}">
+                            <div class="post-preview">
+                                <a th:href="@{'/articles/' + ${article.id()}}">
+                                    <h2 class="post-title" th:text="${article.title()}">Man must explore, and this is exploration at its greatest</h2>
+                                    <h3 class="post-subtitle" th:text="${subTitle.get(article.id())}">Problems look mighty small from 150 miles up</h3>
+                                </a>
+                                <p class="post-meta">
+                                    Posted by
+                                    <span th:text="${article.createdBy()}">Start Bootstrap</span>
+                                    <span th:text="'on ' + ${#temporals.format(article.createdAt(), 'MMM dd, yyyy')}">on September 24, 2023</span>
+                                </p>
+                            </div>
+                            <!-- Divider-->
+                            <hr class="my-4" />
+                        </th:block>
+                        <!-- Pager-->
+                        <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="/articles">Older Posts →</a></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer id="footer" th:replace="~{/fragments/footer::footerFragment}">
+    <hr>
+    푸터 삽입부
+</footer>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+</body>
+</html>

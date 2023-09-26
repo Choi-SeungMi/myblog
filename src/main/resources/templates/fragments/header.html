@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<th:block th:fragment="headerFragment">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="/">MyBlog</a>
+
+             <button type="button" class="btn btn-primary ms-auto" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: 1rem; --bs-btn-font-size: 1rem;" onclick="location.href='/login'" sec:authorize="!isAuthenticated()">Login</button>
+             <button type="button" class="btn btn-primary ms-auto" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: 1rem; --bs-btn-font-size: 1rem;" onclick="location.href='/logout'" sec:authorize="isAuthenticated()">Logout</button>
+        </div>
+    </nav>
+    <!-- Page Header-->
+    <header class="masthead" style="background-image: url('/assets/img/home-bg.jpg')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1>Better Tomorrow</h1>
+                        <span class="subheading">어제보다 더 나은 내일을 위해</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</th:block>
+</html>
