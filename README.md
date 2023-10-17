@@ -12,7 +12,7 @@ Spring과 Java를 사용한 개인 블로그 서비스
 #### 주요 프레임워크 / 라이브러리
 - Java 17 openjdk
 - SpringBoot 2.7.15
-- SpringBoot Security
+- Spring Security
 - Spring Data JPA
 
 #### Build tool
